@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <title>ООО «ПРОСПЕКТ» — Строительство домов под ключ</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Строительство домов под ключ. Каталог типовых проектов, цены, характеристики, контакты." />
+  <link rel="stylesheet" href="assets/style.css" />
+
+</head>
+<body>
+
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <div class="logo">П</div>
+        <span>ООО «ПРОСПЕКТ»<br><small style="font-weight:600;color:var(--muted)">Строим дома «под ключ»</small></span>
+      </div>
+      <nav class="contacts">
+        <a href="tel:+79219313158">+7 (921) 931-31-58</a>
+        <a href="mailto:info@prospekt.example">info@prospekt.example</a>
+      </nav>
+      <div class="cta nav">
+        <a href="index.html">Главная</a>
+        <a href="catalog-a.html">КАРКАСНЫЕ ДОМА</a>
+        <a href="catalog-b.html">ДЕРЕВЯННЫЕ ДОМА</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container inner">
+      <span class="pill">Строим по СНиП и ГОСТ</span>
+      <h1>ООО «ПРОСПЕКТ» — дом вашей мечты «под ключ»</h1>
+      <p>Подберём проект, сделаем смету и построим. ИНН 7810929812 · ОГРН 1217800152745.</p>
+      <div class="cta" style="margin-top:10px">
+        <a class="btn btn-primary" href="catalog-a.html">КАРКАСНЫЕ ДОМА</a>
+        <a class="btn btn-ghost" href="catalog-b.html">ДЕРЕВЯННЫЕ ДОМА</a>
+        <button class="btn" onclick="document.getElementById('callback').showModal()">Перезвоните мне</button>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="callback">
+    <form action="https://formsubmit.co/mr.tseliishchev@mail.ru" method="POST" class="modal-body">
+      <h3>Перезвоните мне</h3>
+      <div class="row">
+        <input type="text" name="name" placeholder="Ваше имя" required />
+        <input type="tel" name="phone" placeholder="Телефон" required />
+        <textarea name="comment" placeholder="Комментарий (необязательно)" rows="3"></textarea>
+        <label class="note"><input type="checkbox" name="consent" required /> Согласен(а) на обработку персональных данных</label>
+        <input type="hidden" name="_subject" value="Новая заявка: Перезвоните мне (ООО ПРОСПЕКТ)">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button class="btn btn-ghost" formmethod="dialog">Отмена</button>
+          <button class="btn btn-primary" type="submit">Отправить</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+
+  <footer class="section">
+    <div class="container cols">
+      <div>
+        <h3>ООО «ПРОСПЕКТ»</h3>
+        <p>ИНН 7810929812 · ОГРН 1217800152745</p>
+        <p><small>© 2025, строительство домов «под ключ». Информация на сайте не является публичной офертой.</small></p>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <p><a href="tel:+79219313158">+7 (921) 931-31-58</a><br><a href="mailto:info@prospekt.example">info@prospekt.example</a></p>
+        <p><small>СПБ, ул. Красного Курсанта, 25, офис 413</small></p>
+      </div>
+      <div>
+        <h4>Навигация</h4>
+        <p><a href="index.html">Главная</a> · <a href="catalog-a.html">Каркасные</a> · <a href="catalog-b.html">Деревянные</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

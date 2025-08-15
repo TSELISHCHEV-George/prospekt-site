@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <title>КАРКАСНЫЕ ДОМА — ООО «ПРОСПЕКТ»</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Строительство домов под ключ. Каталог типовых проектов, цены, характеристики, контакты." />
+  <link rel="stylesheet" href="assets/style.css" />
+
+</head>
+<body>
+
+  <header>
+    <div class="container topbar">
+      <div class="brand">
+        <div class="logo">П</div>
+        <span>ООО «ПРОСПЕКТ»<br><small style="font-weight:600;color:var(--muted)">Строим дома «под ключ»</small></span>
+      </div>
+      <nav class="contacts">
+        <a href="tel:+79219313158">+7 (921) 931-31-58</a>
+        <a href="mailto:info@prospekt.example">info@prospekt.example</a>
+      </nav>
+      <div class="cta nav">
+        <a href="index.html">Главная</a>
+        <a href="catalog-a.html">КАРКАСНЫЕ ДОМА</a>
+        <a href="catalog-b.html">ДЕРЕВЯННЫЕ ДОМА</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="h2">КАРКАСНЫЕ ДОМА</h2>
+      <div class="filters" id="filters">
+        <input id="q" type="search" placeholder="Поиск по названию/площади" />
+        <select id="material">
+          <option value="">Материал: любой</option>
+          <option>Каркас</option>
+          <option>Дерево</option>
+          <option>Газобетон</option>
+          <option>Кирпич</option>
+          <option>СИП</option>
+        </select>
+        <select id="floors">
+          <option value="">Этажность: любая</option>
+          <option value="1">1 этаж</option>
+          <option value="1.5">1.5 этажа</option>
+          <option value="2">2 этажа</option>
+        </select>
+        <select id="sort">
+          <option value="popular">Сортировать: по популярности</option>
+          <option value="price-asc">Цена: по возрастанию</option>
+          <option value="price-desc">Цена: по убыванию</option>
+          <option value="area-desc">Площадь: по убыванию</option>
+          <option value="area-asc">Площадь: по возрастанию</option>
+        </select>
+        <button class="btn btn-primary" onclick="applyFilters()">Показать</button>
+      </div>
+
+      <div class="catalog" id="cards"></div>
+    </div>
+  </section>
+
+  <dialog id="callback">
+    <form action="https://formsubmit.co/mr.tseliishchev@mail.ru" method="POST" class="modal-body">
+      <h3>Перезвоните мне</h3>
+      <div class="row">
+        <input type="text" name="name" placeholder="Ваше имя" required />
+        <input type="tel" name="phone" placeholder="Телефон" required />
+        <textarea name="comment" placeholder="Комментарий (необязательно)" rows="3"></textarea>
+        <label class="note"><input type="checkbox" name="consent" required /> Согласен(а) на обработку персональных данных</label>
+        <input type="hidden" name="_subject" value="Новая заявка: Перезвоните мне (ООО ПРОСПЕКТ)">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="box">
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button class="btn btn-ghost" formmethod="dialog">Отмена</button>
+          <button class="btn btn-primary" type="submit">Отправить</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    const HOUSES = [{"id": 1, "name": "Проект Алина", "area": 98, "size": "8×9 м", "floors": 1, "material": "Каркас", "price": 3490000, "img": "images/house1.jpg"}, {"id": 2, "name": "Проект Север", "area": 120, "size": "9×9 м", "floors": 1.5, "material": "Каркас", "price": 4290000, "img": "images/house2.jpg"}, {"id": 3, "name": "Проект Ритм", "area": 90, "size": "8×8 м", "floors": 1, "material": "Каркас", "price": 3190000, "img": "images/house3.jpg"}, {"id": 4, "name": "Проект Дюн", "area": 128, "size": "9×9 м", "floors": 1.5, "material": "Каркас", "price": 4890000, "img": "images/house4.jpg"}, {"id": 5, "name": "Проект Эко", "area": 96, "size": "8×9 м", "floors": 1, "material": "Каркас", "price": 3490000, "img": "images/house5.jpg"}, {"id": 6, "name": "Проект Горизонт", "area": 112, "size": "9×8 м", "floors": 1.5, "material": "Каркас", "price": 4390000, "img": "images/house6.jpg"}, {"id": 7, "name": "Проект Вилла Мини", "area": 72, "size": "7×8 м", "floors": 1, "material": "Каркас", "price": 2890000, "img": "images/house7.jpg"}, {"id": 8, "name": "Проект Ривьера", "area": 156, "size": "10×9 м", "floors": 2, "material": "Каркас", "price": 5590000, "img": "images/house8.jpg"}];
+
+    const catalogEl = document.getElementById('cards');
+    const qEl = document.getElementById('q');
+    const materialEl = document.getElementById('material');
+    const floorsEl = document.getElementById('floors');
+    const sortEl = document.getElementById('sort');
+
+    function fmtPrice(n){return new Intl.NumberFormat('ru-RU').format(n) + ' ₽'}
+
+    function cardTpl(h){
+      return `
+      <article class="card" data-id="${h.id}">
+        <div class="img">
+          <img src="${h.img}" alt="${h.name}" onerror="this.src='data:image/svg+xml,${encodeURIComponent(placeholder(h.name))}'" />
+          <span class="badge">${h.material}</span>
+        </div>
+        <div class="body">
+          <div class="title">${h.name}</div>
+          <div class="specs">
+            <div>Площадь: <strong>${h.area} м²</strong></div>
+            <div>Размер: <strong>${h.size}</strong></div>
+            <div>Этажей: <strong>${h.floors}</strong></div>
+            <div>Материал: <strong>${h.material}</strong></div>
+          </div>
+          <div class="price">от ${fmtPrice(h.price)}</div>
+          <div class="foot">
+            <button class="btn btn-ghost" onclick="document.getElementById('callback').showModal()">Оставить заявку</button>
+            <a class="btn btn-primary" href="#top">Наверх</a>
+          </div>
+        </div>
+      </article>`
+    }
+
+    function render(list){ catalogEl.innerHTML = list.map(cardTpl).join(''); }
+
+    function applyFilters(){
+      const q = qEl.value.trim().toLowerCase();
+      const mat = materialEl.value;
+      const fl = floorsEl.value;
+      let list = [...HOUSES];
+      if(q){ list = list.filter(h => h.name.toLowerCase().includes(q) || String(h.area).includes(q)); }
+      if(mat){ list = list.filter(h => h.material === mat); }
+      if(fl){ list = list.filter(h => String(h.floors) === fl); }
+      switch(sortEl.value){
+        case 'price-asc': list.sort((a,b)=>a.price-b.price); break;
+        case 'price-desc': list.sort((a,b)=>b.price-a.price); break;
+        case 'area-asc': list.sort((a,b)=>a.area-b.area); break;
+        case 'area-desc': list.sort((a,b)=>b.area-a.area); break;
+        default: list.sort((a,b)=>a.id-b.id);
+      }
+      render(list);
+    }
+
+    function placeholder(title){
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'>
+        <defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+        <stop offset='0' stop-color='%23e2e8f0'/><stop offset='1' stop-color='%23f8fafc'/></linearGradient></defs>
+        <rect width='800' height='600' fill='url(%23g)'/>
+        <g fill='%236b7280' font-family='Arial, Helvetica, sans-serif' text-anchor='middle'>
+          <text x='400' y='300' font-size='34' font-weight='700'>${title}</text>
+          <text x='400' y='340' font-size='20'>Загрузите изображение в /images</text>
+        </g>
+      </svg>`;
+      return svg;
+    }
+
+    render(HOUSES);
+  </script>
+
+  <footer class="section">
+    <div class="container cols">
+      <div>
+        <h3>ООО «ПРОСПЕКТ»</h3>
+        <p>ИНН 7810929812 · ОГРН 1217800152745</p>
+        <p><small>© 2025, строительство домов «под ключ». Информация на сайте не является публичной офертой.</small></p>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <p><a href="tel:+79219313158">+7 (921) 931-31-58</a><br><a href="mailto:info@prospekt.example">info@prospekt.example</a></p>
+        <p><small>СПБ, ул. Красного Курсанта, 25, офис 413</small></p>
+      </div>
+      <div>
+        <h4>Навигация</h4>
+        <p><a href="index.html">Главная</a> · <a href="catalog-a.html">Каркасные</a> · <a href="catalog-b.html">Деревянные</a></p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
